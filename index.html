@@ -3,37 +3,514 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My HTML-only Portfolio</title>
+    <title>Dhia Eddin Thabet - Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --bg-dark: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f0f23, #1a1a2e);
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 8px; height: 8px; left: 40%; animation-delay: 6s; }
+        .particle:nth-child(5) { width: 5px; height: 5px; left: 50%; animation-delay: 8s; }
+        .particle:nth-child(6) { width: 7px; height: 7px; left: 60%; animation-delay: 10s; }
+        .particle:nth-child(7) { width: 4px; height: 4px; left: 70%; animation-delay: 12s; }
+        .particle:nth-child(8) { width: 6px; height: 6px; left: 80%; animation-delay: 14s; }
+        .particle:nth-child(9) { width: 3px; height: 3px; left: 90%; animation-delay: 16s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 0.1; }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header-content {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+        
+        .header-content h1 {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .scroll-indicator:hover {
+            color: var(--primary);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        
+        /* Main content */
+        main {
+            padding: 5rem 0;
+        }
+        
+        section {
+            margin-bottom: 8rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Photo section */
+        .photo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+        
+        .photo-container {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .photo-frame {
+            position: relative;
+            border-radius: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+        
+        .photo-frame:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 35px 70px rgba(102, 102, 241, 0.3);
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            transition: all 0.5s ease;
+        }
+        
+        .photo-frame:hover img {
+            filter: brightness(1.1) saturate(1.2);
+        }
+        
+        .photo-glow {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .photo-frame:hover .photo-glow {
+            opacity: 0.7;
+        }
+        
+        figcaption {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        /* Connect section */
+        .connect-section {
+            text-align: center;
+            padding: 5rem 0;
+        }
+        
+        .connect-section h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .connect-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+        
+        .connect-links li {
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .connect-links li:nth-child(1) { animation-delay: 0.2s; }
+        .connect-links li:nth-child(2) { animation-delay: 0.4s; }
+        .connect-links li:nth-child(3) { animation-delay: 0.6s; }
+        
+        .connect-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.2rem 2.5rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .connect-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .connect-btn:hover::before {
+            left: 100%;
+        }
+        
+        .connect-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(102, 102, 241, 0.2);
+            box-shadow: 0 15px 30px rgba(102, 102, 241, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .connect-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            margin-top: 5rem;
+            color: var(--text-secondary);
+        }
+        
+        hr {
+            display: none;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .connect-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .photo-frame {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom cursor effect */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.8;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .cursor.hover {
+            width: 40px;
+            height: 40px;
+            opacity: 0.3;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1>Dhia Eddin Thabet</h1>
-    <p>Actually, nothing special — there's just a lot to learn.</p>
-</header>
+    <div class="bg-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
-<main>
-    <section>
-        <h2>My Photo </h2>  
-        <figure>
-            <img height="377" src="img.jpeg" alt="My photo placeholder" />
-            <figcaption>This is me</figcaption>
-        </figure>
-    </section>
+    <div class="cursor"></div>
 
-    <section>
-        <h2>Connect with me</h2>
-        <ul>
-            <li><a href="https://github.com/diya-thabet">GitHub</a></li>
-            <li><a href="https://www.linkedin.com/in/dhiathabet/">LinkedIn</a></li>
-            <li><a href="mailto:mohamaddhia@gmail.com">Email</a></li>
-        </ul>
-    </section>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Dhia Eddin Thabet</h1>
+                <p class="tagline">Actually, nothing special — there's just a lot to learn.</p>
+            </div>
+            <div class="scroll-indicator" onclick="scrollToContent()">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 2L12 22M12 22L18 16M12 22L6 16"/>
+                </svg>
+            </div>
+        </div>
+    </header>
 
-</main>
+    <main>
+        <div class="container">
+            <section class="photo-section">
+                <div class="photo-container">
+                    <figure>
+                        <div class="photo-frame">
+                            <div class="photo-glow"></div>
+                            <img height="377" src="img.jpeg" alt="Dhia Eddin Thabet - Professional Portrait" />
+                        </div>
+                        <figcaption>This is me, ready to create amazing things</figcaption>
+                    </figure>
+                </div>
+            </section>
 
-<footer>
-    <hr>
-    <p>© <time datetime="2025">2025</time> Dhia Thabet. Built purely with HTML.</p>
-</footer>
+            <section class="connect-section">
+                <h2>Let's Connect</h2>
+                <ul class="connect-links">
+                    <li>
+                        <a href="https://github.com/diya-thabet" class="connect-btn" target="_blank" rel="noopener">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            GitHub
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/dhiathabet/" class="connect-btn" target="_blank" rel="noopener">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:mohamaddhia@gmail.com" class="connect-btn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M24 4.5v15c0 .85-.65 1.5-1.5 1.5H21V7.387l-9 6.463-9-6.463V21H1.5C.649 21 0 20.35 0 19.5v-15C0 3.649.649 3 1.5 3H3l9 6.463L21 3h1.5c.85 0 1.5.649 1.5 1.5z"/>
+                            </svg>
+                            Email
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© <time datetime="2025">2025</time> Dhia Thabet. Crafted with passion and code.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const links = document.querySelectorAll('a, .scroll-indicator');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll to content
+        function scrollToContent() {
+            document.querySelector('main').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Parallax effect for background particles
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const particles = document.querySelectorAll('.particle');
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.5;
+                particle.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+            });
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.connect-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function(e) {
+                this.style.boxShadow = '0 20px 40px rgba(102, 102, 241, 0.4)';
+            });
+            
+            btn.addEventListener('mouseleave', function(e) {
+                this.style.boxShadow = '0 15px 30px rgba(102, 102, 241, 0.3)';
+            });
+        });
+
+        // Loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
 </body>
 </html>
